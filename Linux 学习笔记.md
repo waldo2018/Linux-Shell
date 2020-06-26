@@ -127,7 +127,7 @@ Linux 学习笔记
 
 - Linux用户需要至少属于一个组
 
-### 常用命令：
+### 常用命令
 
   - 添加用户：
 
@@ -1377,9 +1377,150 @@ Linux 学习笔记
            ├─gnome-keyring-d(hc)───3*[{gnome-keyring-d}]
    ```
 
-   
-
- 
 
 
 
+### 服务（service）管理
+
+- service管理指令：service 服务名 [start | stop | restart | reload | status]
+- 在CentOS7.0之后，不再使用service，而是systemctl
+- 查看防火墙情况：
+  - service iptables status
+  - systemctl status firewalld（7.0之后的版本）
+- 测试某个端口是否在监听：telnet
+- 查看服务名：
+  - 方式1：使用setup->系统服务就可以看到
+  - 方式2：/etc/init.d/服务名称
+- 服务的运行级别（runlevel）：
+  - 查看或修改默认级别：vim /etc/inittab
+  - 每个服务对应的每个运行级别都可以设置
+- 如果不小心将默认的运行级别设置成0或者6，怎么处理？
+  - 进入单用户模式，修改成正常的即可。
+- chkconfig：可以给每个服务的各个运行级别设置自启动/关闭
+- 查看xxx服务：chkconfig –list | grep xxx
+- 查看服务的状态：chkconfig 服务名 --list
+- 给服务的运行级别设置自启动：chkconfig –level 5 服务名 on/off
+- 要所有运行级别关闭或开启：chkconfig 服务名 on/off
+
+### 动态监控进程
+
+- top [选项]
+- top和ps命令很相似。它们都用来显示正在执行的进程。top和ps最大的不同之处在于top在执行一段时间可以更新正在运行的进程。
+- -d 秒数：指定top命令每隔几秒更新。默认是3秒。
+- -i：使top不显示任何闲置或者僵死进程。
+- -p：通过指定监控进程ID来仅仅监控某个进程的状态。
+- 案例1：监控特定用户：top查看进程；u输入用户名。
+- 案例2：终止指定的进程：top查看进程；k输入要结束的进程。
+- 案例3：指定系统状态更新的时间（每隔10秒自动更新，默认是3秒）：top -d 10
+- 交互操作说明：
+  - P：以CPU使用率排序，默认就是此项
+  - M：以内存的使用率排序
+  - N：以PID排序
+  - q：退出top
+
+- 监控网络状态
+
+  - netstat [选项]
+
+  - -an：按一定顺序排列输出
+
+  - -p：显示哪个进程在调用
+
+    
+
+## RPM和YUM
+
+### RPM
+
+ - 介绍
+
+   	- 一种互联网下载包的打包及安装工具，它包含在某些Linux分发版中。它生成具有.rpm扩展名的文件。RPM时RedHat PackageManager的缩写。类似于windows的setup.exe。这一文件格式虽然有redhat的标志，但是理论上是通用的。
+
+- 简单的查询指令
+
+  - 查询已安装的rpm指令 `rpm -qa | grep firefox`
+
+    ``` shell
+    [hc@localhost ~]$ rpm -qa | grep firefox
+    firefox-68.9.0-1.el7.centos.x86_64
+    
+    ```
+
+- rpm包的其它查询指令：
+
+  - `rpm -qa`：查询所安装的所有rpm软件包
+
+  - `rpm -qa | more` 分页显示所有安装的rpm软件包
+
+  - `rpm -qa | grep xx` 过滤显示xx的rpm软件包
+
+  - `rpm -q xx`：查询xx软件包是否安装
+
+  - `rpm -qi xx`：查询软件包信息
+
+    ``` shell
+    [hc@localhost ~]$ rpm -qi firefox
+    Name        : firefox
+    Version     : 68.9.0
+    Release     : 1.el7.centos
+    Architecture: x86_64
+    Install Date: Tue 23 Jun 2020 09:21:35 AM EDT
+    Group       : Unspecified
+    Size        : 240980099
+    License     : MPLv1.1 or GPLv2+ or LGPLv2+
+    Signature   : RSA/SHA256, Thu 04 Jun 2020 10:06:58 AM EDT, Key ID 24c6a8a7f4a80eb5
+    Source RPM  : firefox-68.9.0-1.el7.centos.src.rpm
+    Build Date  : Thu 04 Jun 2020 05:03:09 AM EDT
+    Build Host  : x86-02.bsys.centos.org
+    Relocations : (not relocatable)
+    Packager    : CentOS BuildSystem <http://bugs.centos.org>
+    Vendor      : CentOS
+    URL         : https://www.mozilla.org/firefox/
+    Summary     : Mozilla Firefox Web browser
+    Description :
+    Mozilla Firefox is an open-source web browser, designed for standards
+    compliance, performance and portability.
+    ```
+
+    
+
+  - `rpm -ql xx`：查询软件包中的文件
+
+    ``` shell
+    [hc@localhost ~]$ rpm -ql firefox
+    /etc/firefox
+    /etc/firefox/pref
+    /usr/bin/firefox
+    /usr/lib64/firefox
+    /usr/lib64/firefox/LICENSE
+    /usr/lib64/firefox/application.ini
+    /usr/lib64/firefox/browser/blocklist.xml
+    ```
+
+    
+
+  - `rpm -qf `文件全路径名：查询文件所属的软件包  (反向查询)
+
+    ``` shell
+    [hc@localhost ~]$ rpm -qf /etc/passwd
+    setup-2.8.71-11.el7.noarch
+    ```
+
+    
+
+- 卸载rpm包：`rpm -e 软件包名称`
+
+- 删除时可能会发生依赖错误，忽视依赖强制删除的方法：`rpm -e --nodeps 软件包名称`
+
+- 安装rpm包：`rpm -ivh 软件包全路径名称`
+
+  - `i=install`：安装
+  - `v=verbose`：提示
+  - `h=hash`：进度条
+
+### YUM
+
+- YUM：是一个shell前端软件包管理器。基于RPM包管理，能够从指定的服务器自动下载RPM包并安装，可以**自动处理依赖性关系**，并且一次安装所有依赖的软件包。使用yum的前提是联网。
+- yum list | grep xx：查询yum服务器是否有需要安装的软件
+- yum install xx：安装指定的yum包
+- yum -y remove xx：卸载指定的yum包
