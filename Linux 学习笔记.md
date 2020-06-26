@@ -5,11 +5,11 @@ Linux 学习笔记
 略
 
 ## 文件系统目录结构
-### linux目录特点
-- linux的目录中只有一个主目录
-- linux是以文件的形式管理设备，一切皆为文件
+### Linux目录特点
+- Linux的目录中只有一个主目录
+- Linux是以文件的形式管理设备，一切皆为文件
 
-### 树形结构（/）
+### 树形结构
 
   - /bin：是Binary的缩写，这个目录中存放着经常使用的目录。
 
@@ -147,6 +147,8 @@ Linux 学习笔记
 
     - 创建账户之后修改账户的登录密码`passwd 用户名`
 
+    - <u>注意：创建用户之后如果登录新用户只显示$符号，此时需要执行`usermod -s /bin/bash 用户名`</u>
+
   - 删除用户：
 
     - 保留/home/用户名目录：`userdel 用户名` ***一般不会删除该home目录***
@@ -202,7 +204,7 @@ Linux 学习笔记
 
 ### 帮助指令
 
-  - 当我们对某个指令不熟悉的时候，可以使用linux的帮助指令来了解指令的使用方法
+  - 当我们对某个指令不熟悉的时候，可以使用Linux的帮助指令来了解指令的使用方法
 
     - man 获取帮助信息
 
@@ -215,89 +217,92 @@ Linux 学习笔记
       以上两种方式如果英文文档无法读懂，最好的方式google一下
 
  ### 文件目录类
-    - `pwd` 显示当前工作目录的绝对路径
-    
-    - `ls [选项] [目录或者文件]` 显示文件信息
-    
-        - `-a` 显示当前目录的所有文件，包括隐藏文件
-        - `-l` 长型排列，显示当前目录的文件及信息，但是不包括隐藏文件
-    
-    - `cd [参数]` 切换制定目录
-    	  	- 
-    - `mkdir [选项] 要创建目录`
-    
-        - `-p`  创建多级目录 确保文件目录存在，不存在就创建一个，但是直接使用mkdir来创建的话，多级目录会报错。`mkdir test/test1`报错，另外，创建文件的时候不要在test的前面加上`/`否则会变成隐藏文件。
-    
-    - `rmdir [选项] 要删除的目录`
-    
-        -  删除多级目录。
-        - 另外如果文件夹中有文件的话，`rmdir`是无法删除的，此时必须要使用`rm -rf` 命令。
-    
-    - `touch` 用来修改文件或目录的时间属性，包括存取时间和更改时间，如果文件目录不存在，就创建一个新的文件。
-    
-        - ```linux
-            touch [-acfm][-d<日期时间>][-r<参考文件或目录>] [-t<日期时间>][--help][--version][文件或目录…]
-            
-            ```
-    
-        - <u>创建一个空文件，类似于windows下的新建一个空文件,可以一次性创建多个文件</u>
-    
-    - `cp`  主要用于复制文件和目录
-    
-        - ```linux
-            cp [options] source dest 或 cp [options] source... directory
-            ```
-    
-        - 参数说明
-    
-            - `-a` 通常在复制目录时使用，会保留链接，文件属性，并复制目录下所有内容。其作用相当于`dpr`组合
-        - `-d` 复制是保留链接，这里的链接相当于windows的快捷方式。
-            - `-f` 覆盖已经存在的目标文件而不给出提示。（也可以使用在`\cp` 来实现强制覆盖而不会提示）
-        - `-i` 与`-f` 相反，覆盖已经存在的目标文件时，给出提示，要求确认是否覆盖，回答“y”后覆盖目标文件。
-            - `-p` 除了复制内容之外，还把修改时间和访问权限也复制到新文件中。
-        - <u>`-r` 若给出的是目录文件，则复制目录下所有子目录和文件。（常用）</u>
-            - `-l` 不复制文件，只是生成链接文件。
-    
-        - 注意：
-    
-            - 一定要注意你当前所在目录，清楚源目录和目标目录。
-    
-    - `rm`指令 移除文件和目录
-    
-         - 常用选项
-           	- `-r` 递归删除所有文件
-           	- `-f`  强制删除而不提醒
-    
-    - `mv` 移动文件或重命名
-    
-        - 在同一个文件夹中使用时重命名
-    
-            ```linux
-            hc@hc-RV411:~$ ls
-             aaa.txt            Documents           node_modules   share       Videos
-             bbb                Downloads           owncloud       snap        workspace
-            'Calibre Library'   eclipse-workspace   Pictures       Templates
-             Desktop            Music               Public         testfile
-            hc@hc-RV411:~$ mv aaa.txt bbb.txt
-            hc@hc-RV411:~$ ls
-             bbb                Documents           node_modules   share       Videos
-             bbb.txt            Downloads           owncloud       snap        workspace
-            'Calibre Library'   eclipse-workspace   Pictures       Templates
-             Desktop            Music               Public         testfile
-            hc@hc-RV411:~$ mv bbb.txt bbb/
-            hc@hc-RV411:~$ ls
-             bbb                Downloads           owncloud   snap        workspace
-            'Calibre Library'   eclipse-workspace   Pictures   Templates
-             Desktop            Music               Public     testfile
-             Documents          node_modules        share      Videos
-            hc@hc-RV411:~$ ls bbb/
-            aaa.txt  bbb.txt
-            ```
+- `pwd` 显示当前工作目录的绝对路径
+
+- `ls [选项] [目录或者文件]` 显示文件信息
+
+    - `-a` 显示当前目录的所有文件，包括隐藏文件
+    - `-l` 长型排列，显示当前目录的文件及信息，但是不包括隐藏文件
+
+- `cd [参数]` 切换制定目录
+	  	
+	  	- 
+- `mkdir [选项] 要创建目录`
+
+    - `-p`  创建多级目录 确保文件目录存在，不存在就创建一个，但是直接使用mkdir来创建的话，多级目录会报错。`mkdir test/test1`报错，另外，创建文件的时候不要在test的前面加上`/`否则会变成隐藏文件。
+
+- `rmdir [选项] 要删除的目录`
+
+    -  删除多级目录。
+    - 另外如果文件夹中有文件的话，`rmdir`是无法删除的，此时必须要使用`rm -rf` 命令。
+
+- `touch` 用来修改文件或目录的时间属性，包括存取时间和更改时间，如果文件目录不存在，就创建一个新的文件。
+
+    - ```linux
+        touch [-acfm][-d<日期时间>][-r<参考文件或目录>] [-t<日期时间>][--help][--version][文件或目录…]
+        
+        ```
+
+    - <u>创建一个空文件，类似于windows下的新建一个空文件,可以一次性创建多个文件</u>
+
+- `cp`  主要用于复制文件和目录
+
+    - ```linux
+        cp [options] source dest 或 cp [options] source... directory
+        ```
+
+    - 参数说明
+
+        - `-a` 通常在复制目录时使用，会保留链接，文件属性，并复制目录下所有内容。其作用相当于`dpr`组合
+    - `-d` 复制是保留链接，这里的链接相当于windows的快捷方式。
+        
+        - `-f` 覆盖已经存在的目标文件而不给出提示。（也可以使用在`\cp` 来实现强制覆盖而不会提示）
+    - `-i` 与`-f` 相反，覆盖已经存在的目标文件时，给出提示，要求确认是否覆盖，回答“y”后覆盖目标文件。
+        
+        - `-p` 除了复制内容之外，还把修改时间和访问权限也复制到新文件中。
+    - <u>`-r` 若给出的是目录文件，则复制目录下所有子目录和文件。（常用）</u>
+        
+    - `-l` 不复制文件，只是生成链接文件。
+        
+    - 注意：
+
+        - 一定要注意你当前所在目录，清楚源目录和目标目录。
+
+- `rm`指令 移除文件和目录
+
+     - 常用选项
+       	- `-r` 递归删除所有文件
+       	- `-f`  强制删除而不提醒
+
+- `mv` 移动文件或重命名
+
+    - 在同一个文件夹中使用时重命名
+
+        ```linux
+        hc@hc-RV411:~$ ls
+         aaa.txt            Documents           node_modules   share       Videos
+         bbb                Downloads           owncloud       snap        workspace
+        'Calibre Library'   eclipse-workspace   Pictures       Templates
+         Desktop            Music               Public         testfile
+        hc@hc-RV411:~$ mv aaa.txt bbb.txt
+        hc@hc-RV411:~$ ls
+         bbb                Documents           node_modules   share       Videos
+         bbb.txt            Downloads           owncloud       snap        workspace
+        'Calibre Library'   eclipse-workspace   Pictures       Templates
+         Desktop            Music               Public         testfile
+        hc@hc-RV411:~$ mv bbb.txt bbb/
+        hc@hc-RV411:~$ ls
+         bbb                Downloads           owncloud   snap        workspace
+        'Calibre Library'   eclipse-workspace   Pictures   Templates
+         Desktop            Music               Public     testfile
+         Documents          node_modules        share      Videos
+        hc@hc-RV411:~$ ls bbb/
+        aaa.txt  bbb.txt
+        ```
 
 
 ​            
 
-```
 - `cat`查看文件内容，以只读的方式
 
     ```-
@@ -346,31 +351,24 @@ Linux 学习笔记
                 18	drwxr-xr-x   2 hc   hc   4096 10月  6  2019 Videos
                 19	drwxr-xr-x   9 hc   hc   4096  4月  7 21:56 workspace
                 20	hello world
-​```
-```
+        ​```
+            ```
+
 
 - `echo`指令 输出内容到控制台
 
-  ```
   hc@hc-RV411:~$ echo $JAVA_HOME
   /opt/jdk1.8.0_251
   hc@hc-RV411:~$ echo "hello world"
   hello world
-  ```
 
-  
+
+
 
 - `head`指令 用于显示文件的开头部分内容，默认情况下head指令显示文件的前10行内容
 
-  ```
   hc@hc-RV411:~$ head -n 5 /etc/profile
-  # /etc/profile: system-wide .profile file for the Bourne shell (sh(1))
-  # and Bourne compatible shells (bash(1), ksh(1), ash(1), ...).
-  
-  if [ "${PS1-}" ]; then
-    if [ "${BASH-}" ] && [ "$BASH" != "/bin/sh" ]; then
-  
-  ```
+
 
 - `tail`用于输出文件中尾部的内容，默认情况下tail指令显示文件的后10行内容
 
@@ -384,15 +382,16 @@ Linux 学习笔记
 
     - 查看/etc/profile 最后5行的代码
 
-      ```
-      hc@hc-RV411:~$ tail -n -5 /etc/profile
-      export JAVA_HOME=/opt/jdk1.8.0_251
-      export JRE_HOME=/opt/jdk1.8.0_251/jre
-      export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
-      export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
-      ```
+  hc@hc-RV411:~$ tail -n -5 /etc/profile
+  export JAVA_HOME=/opt/jdk1.8.0_251
+  export JRE_HOME=/opt/jdk1.8.0_251/jre
+  export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
+  export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
 
-    - 实时监控mydate.txt，看看文件有变化时，是否可以看到，实时的追加日期
+  ```
+
+- 实时监控mydate.txt，看看文件有变化时，是否可以看到，实时的追加日期
+  ```
 
 - `ln`指令
 
@@ -401,8 +400,7 @@ Linux 学习笔记
     - `ln -s [原文件或目录] [软链接名]` 给源文件创建一个软链接
 
 - `history` 指令
-
-  - 查看已经执行过历史命令，也可以执行历史指令
+- 查看已经执行过历史命令，也可以执行历史指令
   - 基本语法
     - `history`  查看全部历史指令
     - `history 10`  查看最新的10条指令
@@ -410,4 +408,412 @@ Linux 学习笔记
 
 ### 时间日期类
 
-​	
+ - `date`：显示当前日期和时间
+
+- `date “+%Y”`：显示当前年份
+
+- `date “+%d”`：显示当前月份
+
+- `date “+%Y-%m-%d %H:%M:%S”`：显示年-月-日 时：分：秒
+
+- 设置日期：date -s 字符串时间
+
+- `cal`：查看日历指令；`cal 年份`：显示某一年一整年的日
+
+- 练习案例
+
+  ```
+  hc@hc-RV411:~$ date
+  2020年  6月 25日 木曜日 20:29:04 JST
+  hc@hc-RV411:~$ date "+%Y"
+  2020
+  hc@hc-RV411:~$ date "+%d"
+  25
+  hc@hc-RV411:~$ date "+%m"
+  06
+  hc@hc-RV411:~$ date "+%Y-%m-%d %H:%M:%S"
+  2020-06-25 20:31:35
+  hc@hc-RV411:~$ date -s "^C
+  hc@hc-RV411:~$ date -s "2020-06-24 20:31:35"
+  date: cannot set date: Operation not permitted
+  2020年  6月 24日 水曜日 20:31:35 JST
+  hc@hc-RV411:~$ date
+  2020年  6月 25日 木曜日 20:33:04 JST
+  hc@hc-RV411:~$ cal
+        6月 2020         
+  日 月 火 水 木 金 土  
+      1  2  3  4  5  6  
+   7  8  9 10 11 12 13  
+  14 15 16 17 18 19 20  
+  21 22 23 24 25 26 27  
+  28 29 30              
+                        
+  hc@hc-RV411:~$ cal 2020 
+                              2020
+           1月                    2月                    3月           
+  日 月 火 水 木 金 土  日 月 火 水 木 金 土  日 月 火 水 木 金 土  
+            1  2  3  4                     1   1  2  3  4  5  6  7  
+   5  6  7  8  9 10 11   2  3  4  5  6  7  8   8  9 10 11 12 13 14  
+  12 13 14 15 16 17 18   9 10 11 12 13 14 15  15 16 17 18 19 20 21  
+  19 20 21 22 23 24 25  16 17 18 19 20 21 22  22 23 24 25 26 27 28  
+  26 27 28 29 30 31     23 24 25 26 27 28 29  29 30 31              
+                                                                    
+  
+           4月                    5月                    6月           
+  日 月 火 水 木 金 土  日 月 火 水 木 金 土  日 月 火 水 木 金 土  
+            1  2  3  4                  1  2      1  2  3  4  5  6  
+   5  6  7  8  9 10 11   3  4  5  6  7  8  9   7  8  9 10 11 12 13  
+  12 13 14 15 16 17 18  10 11 12 13 14 15 16  14 15 16 17 18 19 20  
+  19 20 21 22 23 24 25  17 18 19 20 21 22 23  21 22 23 24 25 26 27  
+  26 27 28 29 30        24 25 26 27 28 29 30  28 29 30              
+                        31                                          
+  
+           7月                    8月                    9月           
+  日 月 火 水 木 金 土  日 月 火 水 木 金 土  日 月 火 水 木 金 土  
+            1  2  3  4                     1         1  2  3  4  5  
+   5  6  7  8  9 10 11   2  3  4  5  6  7  8   6  7  8  9 10 11 12  
+  12 13 14 15 16 17 18   9 10 11 12 13 14 15  13 14 15 16 17 18 19  
+  19 20 21 22 23 24 25  16 17 18 19 20 21 22  20 21 22 23 24 25 26  
+  26 27 28 29 30 31     23 24 25 26 27 28 29  27 28 29 30           
+                        30 31                                       
+  
+          10月                   11月                   12月           
+  日 月 火 水 木 金 土  日 月 火 水 木 金 土  日 月 火 水 木 金 土  
+               1  2  3   1  2  3  4  5  6  7         1  2  3  4  5  
+   4  5  6  7  8  9 10   8  9 10 11 12 13 14   6  7  8  9 10 11 12  
+  11 12 13 14 15 16 17  15 16 17 18 19 20 21  13 14 15 16 17 18 19  
+  18 19 20 21 22 23 24  22 23 24 25 26 27 28  20 21 22 23 24 25 26  
+  25 26 27 28 29 30 31  29 30                 27 28 29 30 31        
+                                                                    
+  hc@hc-RV411:~$ 
+  
+  ```
+
+  
+
+### 搜索查找类
+
+ - `find`指令 	将从指定目录向下递归地遍历其各个子目录，将满足条件的文件或者目录显示在终端
+
+    - `find 搜索范围 -name 文件名` 按照指定的文件名查找
+
+      ```
+      hc@hc-RV411:~$ find /home -name hello.txt
+      /home/hc/hello.txt
+      ```
+
+    - `find 搜索范围 -user 用户名 按照指定的用户名查找`
+
+      ```
+      hc@hc-RV411:~$ find /home/hc/bbb -user hc
+      /home/hc/bbb
+      /home/hc/bbb/bbb.txt
+      /home/hc/bbb/aaa.txt
+      ```
+
+    - `find 搜索范围 -size +n/-n/n 文件名`  按照指定的文件大小查找 
+
+      ```
+      hc@hc-RV411:~$ find /home/hc/bbb -size +200k
+      /home/hc/bbb/aaa.txt
+      hc@hc-RV411:~$ find /home/hc/bbb -size 244k
+      /home/hc/bbb/aaa.txt
+      hc@hc-RV411:~$ find /home/hc/bbb -size -200k
+      /home/hc/bbb
+      /home/hc/bbb/bbb.txt
+      ```
+
+ - `locate`指令   可以快速定位文件路径。locate指令利用事先建立的系统中所有文件名称及路径的locate数据库实现快速定位给定的文件。locate指令无需遍历整个文件系统，查询速度较快。为了保证查询结果的准确度，管理员必须定期更新locate时刻
+
+    - 基本语法
+
+       - `locate 搜索文件`
+
+   - 特别说明
+
+     - 由于locate指令基于数据库进行查询，所以第一次运行前，必须使用updatedb指令创建locate数据库。
+
+   - 案例：
+
+     ```
+     hc@hc-RV411:~$ sudo updatedb
+     [sudo] password for hc: 
+     /usr/bin/find: '/run/user/1000/doc': Permission denied
+     /usr/bin/find: '/run/user/1000/gvfs': Permission denied
+     /usr/bin/find: '/run/user/125/gvfs': Permission denied
+     hc@hc-RV411:~$ locate hello.txt
+     /home/hc/hello.txt
+     /usr/share/doc/syslinux-common/asciidoc/hello.txt
+     
+     ```
+
+     ***注意：这里在创建locate数据库的时候，需要权限才能够进行创建，否则创建不成功。***
+
+- `grep`指令   过滤查找，表示讲前面一个命令的处理结果传递给后面的命令处理。经常跟管道一起使用。
+
+  - `grep [选项] 查找内容 原文件`
+
+  - `-n` 显示匹配行及行号
+
+  - `-i` 忽略大小写字母  
+
+    ```java
+    hc@hc-RV411:~/bbb$ cat bbb.txt | grep yes
+    yes
+    yes
+    hc@hc-RV411:~/bbb$ cat bbb.txt | grep -n yes
+    4:yes
+    6:yes
+    hc@hc-RV411:~/bbb$ cat bbb.txt | grep -ni yes
+    4:yes
+    6:yes
+    8:Yes
+    ```
+
+
+###  压缩和解压缩
+
+ - `gzip`和`gunzip`指令
+
+    - `gzip`用于压缩命令，`gunzip`用于解压缩命令
+
+    - 基本语法
+
+       - `gzip 文件` 压缩文件，只能将文件压缩为`*.gz`格式。
+
+         ```
+         hc@hc-RV411:~/bbb$ gzip aaa.txt
+         hc@hc-RV411:~/bbb$ ls
+         aaa.txt.gz  bbb.txt
+         ```
+
+         <u>`gzip`指令进行压缩时，原文件会被压缩文件替代。</u>
+
+       - `gunzip 文件` 解压缩文件。
+
+         ```
+         hc@hc-RV411:~/bbb$ gunzip aaa.txt.gz 
+         hc@hc-RV411:~/bbb$ ls
+         aaa.txt  bbb.txt
+         ```
+
+- `zip`和`unzip`指令
+
+  - `zip`用于压缩指令 `unzip` 用于解压缩命令
+
+  - 基本语法
+
+    - `zip[选项] 压缩文件 将要压缩的内容` 
+
+      - `-r` 
+
+        ```
+        hc@hc-RV411:~$ zip -r bbb.zip /home/hc/bbb/
+          adding: home/hc/bbb/ (stored 0%)
+          adding: home/hc/bbb/bbb.txt (deflated 56%)
+          adding: home/hc/bbb/aaa.txt (deflated 100%)
+        hc@hc-RV411:~$ ls
+         bbb      'Calibre Library'   Documents   eclipse-workspace   info.txt   node_modules   Pictures   share   Templates   Videos
+         bbb.zip   Desktop            Downloads   hello.txt           Music      owncloud       Public     snap    testfile    workspace
+        ```
+
+        
+
+    - `unzip[选项] 解压缩文件`
+
+      - `-d` 
+
+        ```
+        hc@hc-RV411:~$ unzip -d /home/hc bbb.zip
+        Archive:  bbb.zip
+           creating: /home/hc/home/hc/bbb/
+          inflating: /home/hc/home/hc/bbb/bbb.txt  
+          inflating: /home/hc/home/hc/bbb/aaa.txt  
+        hc@hc-RV411:~$ ls
+         bbb.zip            Desktop     Downloads           hello.txt   info.txt   node_modules   Pictures   share   Templates   Videos
+        'Calibre Library'   Documents   eclipse-workspace   home        Music      owncloud       Public     snap    testfile    workspace
+        
+        ```
+
+- `tar`指令  打包指令，最后打包后的文件是.tar.gz的文件
+
+  - 基本语法
+
+    - `tar [选项] xxx.tar.gz 打包的内容`
+
+      - `-c` 产生`.tar`打包文件
+      - `-v`显示详细信息
+      - `-f`指定压缩后的文件名
+      - `-z` 打包同时压缩
+      - `-x`解包`.tar`文件
+
+    - 应用实例
+
+      - 压缩多个文件，讲/home/a.txt和/home/b.txt压缩成a.tar.gz
+
+        ```
+        hc@hc-RV411:~$ tar -zcvf a.tar.gz a.txt b.txt
+        a.txt
+        b.txt
+        hc@hc-RV411:~$ ls
+         a.tar.gz   bbb.zip  'Calibre Library'   Documents   eclipse-workspace   info.txt   node_modules   Pictures   share   Templates   Videos
+         a.txt      b.txt     Desktop            Downloads   hello.txt           Music      owncloud       Public     snap    testfile    workspace
+        
+        ```
+
+        
+
+      - 将/home/的文件夹进行压缩生成myhome.tar.gz
+
+        ```
+        hc@hc-RV411:~$ tar -zcvf ccc.tar.gz ccc/
+        ccc/
+        ccc/a.txt
+        ccc/b.txt
+        ```
+
+      - 将a.tar.gz解压到当前目录
+
+        ```
+        hc@hc-RV411:~$ tar -zxvf ccc.tar.gz
+        ccc/
+        ccc/a.txt
+        ccc/b.txt
+        ```
+
+      - 将myhome.tar.gz解压到ddd/目录下
+
+        ```
+        hc@hc-RV411:~$ tar -zxvf ccc.tar.gz -C ddd/
+        ccc/
+        ccc/a.txt
+        ccc/b.txt
+        hc@hc-RV411:~$ ls ddd/
+        ccc
+        ```
+
+
+
+## 组管理和权限管理
+
+### 组管理
+
+- 文件属性
+
+  - 所有者
+  - 所在组
+  - 其他组
+  - 改变用户所有组
+
+- 文件/目录所有者
+
+  - 一般为文件的创建者，谁创建了改文件，就自然属于该创建者。<u>文件所有者不一定是文件的创建者</u>
+
+  - 查看文件所有者：`ls -ahl`  all 所有文件， human 以人容易理解的方式，list 列表形式显示
+
+    ```
+    tom@hc-RV411:~$ ls -ahl
+    total 20K
+    drwxr-xr-x 4 tom  testgroup 4.0K  6月 26 11:15 .
+    drwxr-xr-x 5 root root      4.0K  6月 26 11:04 ..
+    -rw------- 1 tom  testgroup   31  6月 26 11:14 .bash_history
+    drwx------ 4 tom  testgroup 4.0K  6月 26 11:15 .cache
+    drwxr-xr-x 3 tom  testgroup 4.0K  6月 26 11:15 .local
+    -rw-r--r-- 1 tom  testgroup    0  6月 26 11:15 test.txt
+    ```
+
+  - 修改文件的所有者：`chown 用户名 文件名`  ***change owner***  该命令仅系统管理员可以使用，因为其他组用户没有权限改变另外一组的文件的属性
+
+    ```
+    root@hc-RV411:/home/tom# chown hc test.txt
+    root@hc-RV411:/home/tom# ls -ahl
+    total 20K
+    drwxr-xr-x 4 tom  testgroup 4.0K  6月 26 11:15 .
+    drwxr-xr-x 5 root root      4.0K  6月 26 11:04 ..
+    -rw------- 1 tom  testgroup   31  6月 26 11:14 .bash_history
+    drwx------ 4 tom  testgroup 4.0K  6月 26 11:15 .cache
+    drwxr-xr-x 3 tom  testgroup 4.0K  6月 26 11:15 .local
+    -rw-r--r-- 1 hc   testgroup    0  6月 26 11:15 test.txt
+    ```
+
+    
+
+- 组的创建及改变
+
+  - `groupadd 组名`
+
+  - `chgrp 组名 文件名`
+
+    ```
+    root@hc-RV411:/home/tom# ls -ahl
+    total 20K
+    drwxr-xr-x 4 tom  testgroup 4.0K  6月 26 11:15 .
+    drwxr-xr-x 5 root root      4.0K  6月 26 11:04 ..
+    -rw------- 1 tom  testgroup   31  6月 26 11:14 .bash_history
+    drwx------ 4 tom  testgroup 4.0K  6月 26 11:15 .cache
+    drwxr-xr-x 3 tom  testgroup 4.0K  6月 26 11:15 .local
+    -rw-r--r-- 1 hc   hc           0  6月 26 11:15 test.txt
+    ```
+
+- 其他组
+
+  - 除了文件的所有者和所在组之外，系统的其他用户都是该文件的其他组。
+
+- 改变用户所在组
+
+  - 在添加用户时，可以直接指定该用户添加到哪个组中，同样的用root的管理权限也可以修改文件的所在组 `useradd -g 组名 用户名`
+  - 改变用户所在的组：`usermod -g 组名 用户名`
+  - 改变用户登录的初始目录：`usermod -d 目录名 用户名`
+
+### 权限管理
+
+ - 权限的基本介绍
+
+    - ```
+      -rw-r--r-- 1 hc   hc           0  6月 26 11:15 test.txt
+      ```
+
+       - 0-9位的详细说明
+
+          - 第0位:确定文件的类型。d：文件夹；- 普通文件；c 字符设备【键盘、鼠标等】；b 块文件【硬盘】
+          - 1-3 ：文件的所有者权限
+          - 4-6 ：文件的所在组权限
+          - 7-9：文件的其他组权限
+
+      - ls -l 显示内容说明：
+
+        - rw-：表示文件所有者权限（rw，读写）
+        - r--：表示文件所在组的用户的权限（r，只有读的权限）
+        - r--：表示文件其他组的用户的权限（r，只有读的权限）
+        - 1：如果是文件，表示硬连接的数；如果是目录则表示该目录的子目录个数
+        - tom：文件所有者
+        - bandit：文件所在组
+        - 0：文件的大小，0个字节；如果是目录，则统一为4096
+        - July 1 13：40：文件最后的修改时间
+        - ok.txt：文件名
+
+        ![img](https://img-blog.csdnimg.cn/20190701154715856.png)
+
+      - `rwx`权限详解
+
+        - `rwx`作用到文件：
+          - r：read，可读。读取查看。
+          - w：write，可以修改。但不代表可以删除该文件。删除一个文件的前提条件是对该文件所在的目录有写权限，才能删除该文件。
+          - x：execute，可执行。可以被执行。
+        - `rwx`作用到目录：
+          - r：可以读取，ls查看目录内容。
+          - w：可以修改，目录内创建+删除+重命名目录。
+          - x：可执行，可以进入该目录。
+
+      - 修改权限 
+
+        - 通过给user group 或者other加减权限的方式
+
+          - u 所有者 g 所在组 o 其他组；a 所有人
+          - `chmod u=rwx，g=rx，o=x 文件目录名`：分别权限
+          - `chmod o+w 文件目录名`：给其他人都增加写的权限
+          - `chmod a-x 文件目录名`：给所有的用户都减掉执行权限
+
+        - 通过数字的方式
+
+          
