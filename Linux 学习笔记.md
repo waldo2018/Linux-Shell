@@ -57,7 +57,10 @@
 
 ## 远程登录和文件传输
 
-- 远程登录：Xshell
+- 远程登录：Xshell  （网络基础知识需要补充）
+  - Centos7 远程登录不成功解决方案
+    - [Centos7设置静态IP](https://blog.csdn.net/weiyongle1996/article/details/75050738)
+    - [Centos7防火墙启用](https://blog.csdn.net/gaokcl/article/details/82908844) 
 - 远程文件传输：Xftp
 
 ## 编辑工具
@@ -137,7 +140,9 @@
 
     - 当创建成功用户后，会自动创建用户的home/用户名目录。__（ubuntu20.04 不可）__
 
-      > `useradd xm` *系统并没有自动创建`home/xm `目录，仅仅创建了用户*
+      > `useradd xm` *系统并没有自动创建`home/xm `目录*
+      >
+      > - 说明：在Centos7中，该命令直接创建了`/home/xm` 目录，但是在Ubuntu中，只创建了用户
       >
       > `useradd -d /home/xm1 xm1` *系统创建用户，但并未创建/home/xm1目录*
       >
@@ -166,6 +171,13 @@
   - 查询当前用户指令
 
     - `whoami`
+
+      ``` shell
+      [root@localhost hc]# whoami
+      root
+      ```
+
+      
 
 - 用户组：类似于角色，系统可以对有共性的多个用户进行统一管理。
 
@@ -381,11 +393,15 @@
 
     - 查看/etc/profile 最后5行的代码
 
+  ```
   hc@hc-RV411:~$ tail -n -5 /etc/profile
   export JAVA_HOME=/opt/jdk1.8.0_251
   export JRE_HOME=/opt/jdk1.8.0_251/jre
   export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
   export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+  ```
+  
+  
 
 
 - 实时监控mydate.txt，看看文件有变化时，是否可以看到，实时的追加日期
@@ -1076,7 +1092,8 @@
 
  ## 网络配置
 
-     	- 指定固定IP：直接修改配置文件来指定IP，并可以连接到外网，编辑：`vim /etc/sysconfig/network-scripts/ifcfg-eth0`
+- 指定固定IP：直接修改配置文件来指定IP，并可以连接到外网，编辑：`vim /etc/sysconfig/network-scripts/ifcfg-eth0`
+
 - 重启网络服务：`service network restart`
 
 ​      
