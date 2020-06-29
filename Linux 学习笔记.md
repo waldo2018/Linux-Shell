@@ -2,7 +2,15 @@
 
 ## 基本介绍
 
-略
+ - Linux 内核最初知识芬兰人Linus Torvalds 在赫尔辛基大学上学时出于个人爱好编写的。
+
+ - Linux 是一套免费使用和自由传播的类Unix系统，是一个基于POSIX和UNIX的多用户、多任务、支持多线程和多CPU的操作系统。
+
+ - Linux 能运行主要的UNIX工具软件、应用程序和网络协议。它支持32位和64位硬件。Linux 继承了Unix以网络为核心的设计思想，是一个性能未定的多用户网络操作系统。
+
+ - 目前市面上比较有名的发行版本位：
+
+   ​	`Ubuntu、RedHat、CentOS、Debian、Fedora、SuSE、OpenSUSE、Arch Linux、SolusOS` 
 
 ## 文件系统目录结构
 ### Linux目录特点
@@ -232,12 +240,28 @@
  ### 文件目录类
 - `pwd` 显示当前工作目录的绝对路径
 
+    - 绝对路径永远是相对于根文件夹的。它们的标志第一个字符永远都是“/”
+
+    - 相对路径永远都是相对于他们所处文件夹位置。它们的第一个字符没有“/''
+
+        ``` shell
+        [hc@localhost ~]$ cd test                   #相对路径
+        [hc@localhost test]$ cd ..         
+        [hc@localhost ~]$ cd ~/test                 #绝对路径，但是前面的/home/hc 被~代替
+        [hc@localhost test]$ cd ..
+        [hc@localhost ~]$ cd /home/hc/test          #绝对路径    
+        [hc@localhost test]$ 
+        ```
+
+        
+
 - `ls [选项] [目录或者文件]` 显示文件信息
 
     - `-a` 显示当前目录的所有文件，包括隐藏文件
     - `-l` 长型排列，显示当前目录的文件及信息，但是不包括隐藏文件
 
 - `cd [参数]` 切换制定目录
+
 - `mkdir [选项] 要创建目录`
 
     - `-p`  创建多级目录 确保文件目录存在，不存在就创建一个，但是直接使用`mkdir`来创建的话，多级目录会报错。`mkdir test/test1`报错，另外，创建文件的时候不要在test的前面加上`/`否则会变成隐藏文件。
@@ -326,7 +350,7 @@
 
     - `enter`向下一行，`space` 向下一页
 
-- `>` he`>>`
+- `>` 和`>>`
 
     - `>`  输出重定向  会将原来的内容覆盖掉
 
@@ -502,7 +526,6 @@
   
   ```
 
-  
 
 ### 搜索查找类
 
@@ -837,10 +860,16 @@
           - `chgrp newgroup file`：改变文件的所有组
           - `-R`：如果是目录，则使其下所有子文件或目录递归生效
 
-## 定时任务调度 (跳过未练习)
+## 定时任务调度 
 
-	### `crond`任务调度
+### `crond`任务调度
 
+  - 基本介绍
+       - `crontab` 命令是cron table的简写，它是cron的配置文件，也可以叫它作业列表，
+          - `/var/spool/cron/`目录下存放的是每个用户包括root用户的crontab任务，每个任务以创建者的名字命名
+          - `/etc/crontab`这个文件负责调度各种管理和任务。
+        - `/etc/cron.d/`这个目录用来存放任何要执行的crontab文件或脚本
+        -  我们还可以把脚本放在`/etc/cron.hourly`、`/etc/cron.daily`、`/etc/cron.weekly`、`/etc/cron.monthly`目录中，让它每小时/天/星期、月执行一次。
   - crontab进行定时任务调度
       - 基本语法 `crontab [选项]`
       - `-e` 编辑crontab定时任务
@@ -991,16 +1020,17 @@
       tmpfs           380M  4.0K  380M   1% /run/user/1001
       /dev/sdc1       932G  307G  625G  33% /media/hc/583211C03211A452
       ```
-      
+
       - 查询指定目录的磁盘占用情况
 
-           - 基本语法  `du [选项] 目录`
+        - 基本语法  `du [选项] 目录`
 
-                 - `-s`指定目录占用大小汇总
-             - `-h` 带计量单位
-                 - `-a` 含文件
-             - `--max-depth=1` 子目录深度
-                 - `-c` 列出明细的同时，增加汇总值
+          - `-s`指定目录占用大小汇总
+
+          - `-h` 带计量单位
+          - `-a` 含文件
+          - `--max-depth=1` 子目录深度
+              - `-c` 列出明细的同时，增加汇总值
 
         - 应用实例
 
@@ -1014,7 +1044,7 @@
               1.2G	/opt
               1.2G	total
               ```
-      
+
     - 磁盘情况-工作使用指令
 
       - 统计/home 文件夹下文件的个数
@@ -1096,7 +1126,64 @@
 
 - 重启网络服务：`service network restart`
 
-​      
+   - 案例
+
+     - 查看网络的工作状态
+
+       ``` shell
+       [hc@localhost ~]$ systemctl status NetworkManager
+       ● NetworkManager.service - Network Manager
+          Loaded: loaded (/usr/lib/systemd/system/NetworkManager.service; enabled; vendor preset: enabled)
+          Active: active (running) since Sun 2020-06-28 22:47:35 EDT; 2h 14min ago
+            Docs: man:NetworkManager(8)
+        Main PID: 919 (NetworkManager)
+           Tasks: 3
+          CGroup: /system.slice/NetworkManager.service
+                  └─919 /usr/sbin/NetworkManager --no-daemon
+       
+       ```
+
+       
+
+     - 编辑网络配置文件
+
+       ``` shell
+       编辑该 /etc/sysconfig/network-scripts/ifcfg-ens33  #如何确定改文件，ip addr命令查看正在运行中的网卡，找到该网卡之后，编辑对应该网卡的配置文件
+       
+       [hc@localhost network-scripts]$ vim ifcfg-ens33
+       
+       TYPE=Ethernet
+       PROXY_METHOD=none
+       BROWSER_ONLY=no
+       BOOTPROTO=static                            #设置 static 表示网址固定 
+       DEFROUTE=yes
+       IPV4_FAILURE_FATAL=no
+       IPV6INIT=yes
+       IPV6_AUTOCONF=yes
+       IPV6_DEFROUTE=yes
+       IPV6_FAILURE_FATAL=no
+       IPV6_ADDR_GEN_MODE=stable-privacy
+       NAME=ens33                                  #网卡的名称同ip addr 查看的一致
+       UUID=2e776939-1243-4ff9-9b3f-665b28b23bab
+       DEVICE=ens33
+       ONBOOT=yes                                  #启动是生效
+       GATEWAY="192.168.81.2"                      #网关，能否连接网络的关键，一定注意
+       IPADDR="192.168.81.66"                      #IP地址   
+       NETMASK=255.255.255.0
+       PREFIX=24
+       DNS="8.8.8.8"
+       
+       ```
+
+     - 网络配置文件编辑完成之后需要进行重启才能够生效，当然，重启机器也可以。
+
+       ``` shell
+       systemctl restart network
+       ```
+
+       **Tips**：设置网络的时候，特别是虚拟机的网络设置的时候。一定要注意虚拟机的网卡IP要与主机的虚拟机网卡的IP在同一个网段内，否则连通不上。另外，网络连接不上的时候，在同一个网段内还是无法连接，此时，应该检查Linux的虚拟机的防火墙是否设置开启状态。
+
+       
 
 ## 进程管理
 
@@ -1153,7 +1240,7 @@
     hc         22061  0.0  0.0  21140  3664 pts/0    R+   21:34   0:00 ps -u
     ```
 
-    <u>user:用户名；PID：进程ID；CPU：占用的CPU；MEM：占用内存；VSZ：使用的虚拟内存；RSS：使用的物理内存情况；START：进程的状态 s 休眠 r 运行；TIME：启动时间；COMMAND：进程执行的时间</u>
+    <u>user:用户名；PID：进程ID；CPU：占用的CPU；MEM：占用内存；VSZ：使用的虚拟内存；RSS：使用的物理内存情况；START：进程的状态 S 休眠 R运行；TIME：启动时间；COMMAND：进程执行的时间</u>
 
   - `ps -x`显示后台进程运行的参数
 
@@ -1453,11 +1540,15 @@
 - 测试某个端口是否在监听：telnet
 - 查看服务名：
   - 方式1：使用setup->系统服务就可以看到
+  
+    Tips：进入图形界面后使用tab建切换选项退出
+  
   - 方式2：`/etc/init.d/`服务名称  ***比较常用***
 - 服务的运行级别（`runlevel`）：对应开机的7个运行级别
   - 查看或修改默认级别：`vim /etc/inittab`
     - 每个服务对应的每个运行级别都可以设置
 - 如果不小心将默认的运行级别设置成0或者6，怎么处理？
+  
   - 进入单用户模式，修改成正常的即可。
 - chkconfig：可以给每个服务的各个运行级别设置自启动/关闭
 - 查看xxx服务：chkconfig –list | grep xxx
