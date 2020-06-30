@@ -1,3 +1,4 @@
-# linuxstudydoc
+# 学习笔记
 
-Linux Study Notes
+记录生活中自己的学习的点点滴滴
+
