@@ -1678,3 +1678,10 @@
 - yum list | grep xx：查询yum服务器是否有需要安装的软件
 - yum install xx：安装指定的yum包
 - yum -y remove xx：卸载指定的yum包
+
+-------------------
+
+
+
+## Ubuntu下安装mysql教程
+
